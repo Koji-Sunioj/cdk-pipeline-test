@@ -2,6 +2,7 @@ import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import * as codecommit from "aws-cdk-lib/aws-codecommit";
 import * as awsPipeline from "aws-cdk-lib/pipelines";
+import { PipelineStage } from "./pipeline-stages";
 
 export class PipeLineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -21,5 +22,8 @@ export class PipeLineStack extends cdk.Stack {
         commands: ["npm ci", "npm run build", "npx cdk synth"],
       }),
     });
+
+    const deploy = new PipelineStage(this, "Deploy");
+    const deployStage = pipeline.addStage(deploy);
   }
 }
