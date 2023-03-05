@@ -11,7 +11,7 @@ export class PipeLineStack extends cdk.Stack {
     });
 
     const pipeline = new awsPipeline.CodePipeline(this, "Pipeline", {
-      pipelineName: "WorkshopPipeline",
+      pipelineName: "TestPipeLine",
       synth: new awsPipeline.CodeBuildStep("SynthStep", {
         input: awsPipeline.CodePipelineSource.codeCommit(repo, "main"),
         installCommands: [
