@@ -11,6 +11,6 @@ exports.handler = async function (event: APIGatewayEvent, context: Context) {
   return {
     statusCode: 200,
     headers: returnHeaders,
-    body: JSON.stringify({ message: "hey" }),
+    body: JSON.stringify({ message: "hey how are you" }),
   };
 };
