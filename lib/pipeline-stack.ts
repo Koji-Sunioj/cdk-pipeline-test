@@ -1,12 +1,25 @@
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import * as codecommit from "aws-cdk-lib/aws-codecommit";
+import * as awsPipeline from "aws-cdk-lib/pipelines";
 
 export class PipeLineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
-    new codecommit.Repository(this, "PipeLineTest", {
+    const repo = new codecommit.Repository(this, "PipeLineTest", {
       repositoryName: "PipeLineTest",
+    });
+
+    const pipeline = new awsPipeline.CodePipeline(this, "Pipeline", {
+      pipelineName: "WorkshopPipeline",
+      synth: new awsPipeline.CodeBuildStep("SynthStep", {
+        input: awsPipeline.CodePipelineSource.codeCommit(repo, "main"),
+        installCommands: [
+          "npm install -g aws-cdk",
+          "npm install -g npm@latest",
+        ],
+        commands: ["npm ci", "npm run build", "npx cdk synth"],
+      }),
     });
   }
 }
